@@ -31,10 +31,10 @@ COPY app app
 EXPOSE 8000
 
 # Start the FastAPI application / Not recommended for Production
-# CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
+# CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000" , "--reload"]
 
 # Copy the server configuration file into the container
 COPY gunicorn_server_config.py .
 
 # Start Gunicorn when the container launches
-CMD ["gunicorn", "app.main:app", "-c", "gunicorn_server_config.py"]
+CMD ["gunicorn", "app.main:app", "-c", "gunicorn_server_config.py", "--reload"]
