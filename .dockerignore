@@ -1,0 +1,29 @@
+# Ignore Python bytecode files
+*.pyc
+__pycache__/
+
+# Ignore development and test files
+*.pyo
+*.pyd
+*.py~
+*.swp
+*.bak
+*.cache
+*.log
+*.sqlite
+instance/
+
+# Ignore version control files
+.git
+.gitignore
+*/.git
+*/.gitignore
+*.svn
+*.hg
+
+# Ignore system files
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Icon?
+Desktop.ini
