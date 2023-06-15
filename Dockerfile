@@ -4,6 +4,17 @@ FROM continuumio/miniconda3
 # Set the root user
 USER root
 
+# Installing Oracle instant client
+WORKDIR    /opt/oracle
+RUN        apt-get update && apt-get install -y libaio1 wget unzip \
+            && wget https://download.oracle.com/otn_software/linux/instantclient/instantclient-basiclite-linuxx64.zip \
+            && unzip instantclient-basiclite-linuxx64.zip \
+            && rm -f instantclient-basiclite-linuxx64.zip \
+            && cd /opt/oracle/instantclient* \
+            && rm -f *jdbc* *occi* *mysql* *README *jar uidrvci genezi adrci \
+            && echo /opt/oracle/instantclient* > /etc/ld.so.conf.d/oracle-instantclient.conf \
+            && ldconfig
+
 # Set the working directory in the container
 WORKDIR /app
 
@@ -32,9 +43,11 @@ EXPOSE 8000
 
 # Start the FastAPI application / Not recommended for Production
 # CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000" , "--reload"]
+# uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+# docker run -d -p 1521:1521 -p 5500:5500 container-registry.oracle.com/database/free:latest
 
 # Copy the server configuration file into the container
 COPY gunicorn_server_config.py .
 
 # Start Gunicorn when the container launches
-CMD ["gunicorn", "app.main:app", "-c", "gunicorn_server_config.py", "--reload"]
+CMD ["gunicorn", "app.main:app", "-c", "gunicorn_server_config.py", "--reload", "--log-level", "debug"]

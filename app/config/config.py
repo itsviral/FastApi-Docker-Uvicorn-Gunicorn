@@ -1,3 +1,3 @@
-oracle_username = ""
-oracle_password = ""
+oracle_username = "system"
+oracle_password = "new_password"
 oracle_dsn = ""
