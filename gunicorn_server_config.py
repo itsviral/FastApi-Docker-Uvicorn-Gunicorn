@@ -152,9 +152,9 @@ tmp_upload_dir = None
 #       A string of "debug", "info", "warning", "error", "critical"
 #
 
-errorlog = 'app/logs/gunicorn/error.log'
-loglevel = 'info'
-accesslog = 'app/logs/gunicorn/access.log'
+errorlog = 'app/logs/gunicorn_error_access.log'
+loglevel = 'debug'
+accesslog = 'app/logs/gunicorn_error_access.log'
 access_log_format = '%(h)s %(l)s %(u)s %(t)s "%(r)s" %(s)s %(b)s "%(f)s" "%(a)s"'
 
 #

@@ -1,38 +1,18 @@
-import logging
-from fastapi import FastAPI
 import cx_Oracle
 from app.config import config
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
+from app.logger.logger import get_logger
 
 app = FastAPI()
+logger = get_logger(__name__)
 
-# Get the root logger
-logger = logging.getLogger()
-logger.setLevel(logging.DEBUG)
-
-# Create a file handler and set its level to DEBUG
-file_handler = logging.FileHandler('app.log')
-file_handler.setLevel(logging.DEBUG)
-
-# Create a stream handler and set its level to DEBUG
-stream_handler = logging.StreamHandler()
-stream_handler.setLevel(logging.DEBUG)
-
-# Create a formatter and add it to the handlers
-formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
-file_handler.setFormatter(formatter)
-stream_handler.setFormatter(formatter)
-
-# Add the handlers to the root logger
-logger.addHandler(file_handler)
-logger.addHandler(stream_handler)
 
 
 @app.get("/")
 def read_root():
     # Log a debug message
-    logger.info("Root endpoint was accessed")
+    logger.info("Root endpoint was accessed. Finally i was able to get logs")
 
     return {"Hello": "World"}
 
@@ -82,3 +62,5 @@ async def execute_query(item: Item):
         logger.error(f"An exception occurred: {str(e)}")
         raise HTTPException(status_code=500, detail=str(e))
 
+if __name__ == '__main__':
+    logger.info('Starting APP')
