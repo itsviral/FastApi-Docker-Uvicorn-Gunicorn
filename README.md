@@ -3,12 +3,15 @@
 
 # If Need to create Docker Networking 
 # docker network create my-network
+docker build -t fastapi:v1 .
+docker images
+docker run -d --name container1 --network=mynetwork d72d12a88ed4
 
 
 # Build Docker Image from the docker Root File of Repo
 docker build -t fastapi:v1 .
-Docker images
-docker run -d --name container1 --network=mynetwork d72d12a88ed4
+docker run -p 8000:8000 fastapi:v1     
+
 
 
 # Setup Oracle Image 
