@@ -1,9 +1,9 @@
 import requests
 import json
 
-url = 'http://127.0.0.1:8000/execute_query/'
+url = 'http://127.0.0.1:8000/oracle_query/'
 
-query = "SELECT * FROM employees;"
+query = "select * from all_tables"
 data = {'sql': query}
 
 response = requests.post(url, json=data)

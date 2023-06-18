@@ -1,66 +1,40 @@
+from fastapi import FastAPI, HTTPException
+from app.logger.logger import get_logger
 import cx_Oracle
 from app.config import config
-from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
-from app.logger.logger import get_logger
+
 
 app = FastAPI()
 logger = get_logger(__name__)
 
 
-
 @app.get("/")
 def read_root():
-    # Log a debug message
-    logger.info("Root endpoint was accessed. Finally i was able to get logs")
-
+    logger.info("Root endpoint was accessed")
     return {"Hello": "World"}
 
 
-class Item(BaseModel):
+class Oracle_IO_Model(BaseModel):
     sql: str
-
-
-@app.post("/execute_query/")
-async def execute_query(item: Item):
-    """
-    Executes the given SQL query and returns the results.
-
-    Args:
-        item: The Item object containing the SQL query.
-
-    Returns:
-        The results of the SQL query.
-    """
-
+@app.post("/oracle_query/")
+async def oracle_query(data_model: Oracle_IO_Model):
     # Update the connection details according to your Oracle database configuration
-    dsn = cx_Oracle.makedsn("localhost", 1521, sid="FREE")
-    connection = cx_Oracle.connect(
-        user=config.oracle_username,
-        password=config.oracle_password,
-        dsn=config.oracle_dsn,
-    )
-
+    new_dsn = cx_Oracle.makedsn(config.oracle_hostname, config.oracle_port,
+                                service_name=config.oracle_service_name)
+    connection = cx_Oracle.connect(user=config.oracle_username,
+                                   password=config.oracle_password, dsn=new_dsn)
     try:
         cursor = connection.cursor()
-
-        # Execute the SQL query
-        cursor.execute(item.sql)
-
-        # Fetch the result
+        cursor.execute(data_model.sql)
         result = cursor.fetchall()
-
-        # Close the cursor and the database connection
-        cursor.close()
-        connection.close()
-
-        # Return the results
+        cursor.close(), connection.close()
         return result
-
     except Exception as e:
         # Log the exception
         logger.error(f"An exception occurred: {str(e)}")
         raise HTTPException(status_code=500, detail=str(e))
+
 
 if __name__ == '__main__':
     logger.info('Starting APP')

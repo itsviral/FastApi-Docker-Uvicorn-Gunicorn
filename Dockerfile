@@ -44,7 +44,6 @@ EXPOSE 8000
 # Start the FastAPI application / Not recommended for Production
 # CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000" , "--reload"]
 # uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
-# docker run -d -p 1521:1521 -p 5500:5500 container-registry.oracle.com/database/free:latest
 
 # Copy the server configuration file into the container
 COPY gunicorn_server_config.py .
