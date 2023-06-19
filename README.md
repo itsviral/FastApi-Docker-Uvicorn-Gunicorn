@@ -2,7 +2,7 @@
 
 
 # If Need to create Docker Networking 
-# docker network create my-network
+docker network create my-network
 docker build -t fastapi:v1 .
 docker images
 docker run -d --name container1 --network=mynetwork d72d12a88ed4
