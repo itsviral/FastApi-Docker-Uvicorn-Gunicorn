@@ -1,0 +1,18 @@
+version: '3.7'
+services:
+  app:
+    image: viral/app
+    container_name: app
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 8000:8000
+
+  oracle-free:
+    image: gvenzl/oracle-free
+    container_name: oracle-free
+    ports:
+      - 1521:1521
+    environment:
+      ORACLE_PASSWORD: oracle
